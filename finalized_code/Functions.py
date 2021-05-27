@@ -18,6 +18,14 @@ class Cleaning_Functions:
     
 #     def __init__(self,df):
 
+    def delete_id_columns(self, df):
+        """
+         drop columns that are id specific, ie WX2018-TS-123
+         Note: Should be the first function that you run
+        """
+        df = df.drop(["ID_PROJ","ID_COUNTRY","SURVEY_ID","ID_HH"], axis=1)
+        return df
+
     def getNAs(self, df):
         colNames = []
         percentNA = []
@@ -67,16 +75,17 @@ class Cleaning_Functions:
 
         return (view_data)
     
-    def replace_na_with_NaN(self, df):
+    def replace_NAN_with_na(self, df):
         
         """
          Input: Full dataset
-         Output: Full dataset where object strings have underscores and spaces removed
-         EX:'No_School-> NoSchool, no school -> noschool'
+         Output: convert NaN to na for categorical variables only
+         EX:'elementary_school, NaN -->  elementary_school , na'
         """
         
         for i in df.columns:
-            df[i] = df[i].replace(np.nan, 'na')
+            if (df[i].dtype == "O"):
+                df[i] = df[i].replace(np.nan,"na")
         return df
     
     # removes underscores and spaces from instances, 
@@ -98,14 +107,10 @@ class Cleaning_Functions:
     
     def convert_to_categorical(self, df):
         """
-         Input: dataframe, column names of variables to be transformed
-         Output: dataframe with dtypes of indicated variables changed
-         
-         #NOTE: USE this function AFTER preprocessing functions above
+         converts all object variables to categorical dtypes
+         Note: use this last
         """
     
-    # convert these to categories
-    #df[v1] = df[v1].astype(‘category’)
     
         for i in df.columns:
             if (df[i].dtype == "O"):
@@ -125,8 +130,8 @@ class Cleaning_Functions:
         num_train = Xtrain.select_dtypes(include=['float64', 'int64'])
         num_test = Xtest.select_dtypes(include=['float64', 'int64'])
         
-        cat_train = Xtrain.select_dtypes(include=['object', 'category'])
-        cat_test = Xtest.select_dtypes(include=['object', 'category'])
+        #cat_train = Xtrain.select_dtypes(include=['object', 'category'])
+        #cat_test = Xtest.select_dtypes(include=['object', 'category'])
       
 
     # imputes NA numerics with median
@@ -134,14 +139,14 @@ class Cleaning_Functions:
             Xtrain[i] = num_train.fillna(np.nanmedian(Xtrain[i]))
         
         for i in num_test.columns:
-            Xtest[i] = num_test.fillna(np.nanmedian(num_test[i]))
+            Xtest[i] = num_test.fillna(np.nanmedian(Xtest[i]))
         
     # categorical NA to "Na" level
-        for i in cat_train.columns:
-            Xtrain[i] = cat_train.replace(np.nan, "Na")
+#         for i in cat_train.columns:
+#             Xtrain[i] = cat_train.replace(np.nan, "Na")
         
-        for i in cat_test.columns:
-            Xtest[i] = cat_test.replace(np.nan, "Na")
+#         for i in cat_test.columns:
+#             Xtest[i] = cat_test.replace(np.nan, "Na")
 
    
         return Xtrain, Xtest
@@ -169,3 +174,4 @@ class Cleaning_Functions:
     
         return new_data, prediction_dataset
 
+    
