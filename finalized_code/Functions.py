@@ -76,7 +76,7 @@ class Cleaning_Functions:
         """
         
         for i in df.columns:
-            df[i] = df[i].replace('na', np.NaN)
+            df[i] = df[i].replace(np.nan, 'na')
         return df
     
     # removes underscores and spaces from instances, 
