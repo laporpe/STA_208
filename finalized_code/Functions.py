@@ -96,7 +96,7 @@ class Cleaning_Functions:
     
     
     
-    def convert_to_categorical(self, df, variables):
+    def convert_to_categorical(self, df):
         """
          Input: dataframe, column names of variables to be transformed
          Output: dataframe with dtypes of indicated variables changed
@@ -107,8 +107,9 @@ class Cleaning_Functions:
     # convert these to categories
     #df[v1] = df[v1].astype(‘category’)
     
-        for i in variables:
-            df[i] = df[i].astype('category')
+        for i in df.columns:
+            if (df[i].dtype == "O"):
+                df[i] = df[i].astype('category')
         return df
     
     
@@ -164,6 +165,7 @@ class Cleaning_Functions:
     
     #create new data
         new_data = df.drop(labels=rows_to_delete, axis=0)
+        new_data = new_data.reset_index(drop=True)
     
         return new_data, prediction_dataset
 
