@@ -123,9 +123,8 @@ class Cleaning_Functions:
         Input: a dataset
         action: Imputes the numeric columns by replacing nan values with the median
         """
-        
         numeric_data = df.select_dtypes(include=['float64', 'int64'])
-       # imputes NA numerics with median
+        #imputes NA numerics with median
         for i in numeric_data.columns:
             df[i] = df.fillna(np.nanmedian(df[i]))
        
