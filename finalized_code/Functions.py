@@ -126,7 +126,7 @@ class Cleaning_Functions:
         numeric_data = df.select_dtypes(include=['float64', 'int64'])
         #imputes NA numerics with median
         for i in numeric_data.columns:
-            df[i] = df.replace(np.nan,np.nanmedian(df[i]))
+            df[i] = df[i].fillna(np.nanmedian(df[i]))
        
         return df
 
