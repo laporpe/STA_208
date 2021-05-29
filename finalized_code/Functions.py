@@ -118,39 +118,20 @@ class Cleaning_Functions:
         return df
     
     
-    def impute_data(self, Xtrain, Xtest):
+    def impute_data(self, df):
         """
-        Input: XTraining set, XTesting Set
-        Output: The inputs with NA numerical variabes imputed by column median, and categorical
-        NA varaibles converted into a seperate category "Na" 
+        Input: a dataset
+        action: Imputes the numeric columns by replacing nan values with the median
         """
         
+        numeric_data = Xtrain.select_dtypes(include=['float64', 'int64'])
+       # imputes NA numerics with median
+        for i in numeric_data.columns:
+            df[i] = df.fillna(np.nanmedian(df[i]))
        
-   
-        num_train = Xtrain.select_dtypes(include=['float64', 'int64'])
-        num_test = Xtest.select_dtypes(include=['float64', 'int64'])
-        
-        #cat_train = Xtrain.select_dtypes(include=['object', 'category'])
-        #cat_test = Xtest.select_dtypes(include=['object', 'category'])
-      
+        return df
 
-    # imputes NA numerics with median
-        for i in num_train.columns:
-            Xtrain[i] = num_train.fillna(np.nanmedian(Xtrain[i]))
-        
-        for i in num_test.columns:
-            Xtest[i] = num_test.fillna(np.nanmedian(Xtest[i]))
-        
-    # categorical NA to "Na" level
-#         for i in cat_train.columns:
-#             Xtrain[i] = cat_train.replace(np.nan, "Na")
-        
-#         for i in cat_test.columns:
-#             Xtest[i] = cat_test.replace(np.nan, "Na")
-
-   
-        return Xtrain, Xtest
-
+    
     def drop_response_rows_with_NAs(self,df,y_variable):
         """
         Input: dataframe, response variable column 
