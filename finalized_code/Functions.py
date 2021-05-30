@@ -131,7 +131,7 @@ class Cleaning_Functions:
         return df
 
     
-    def drop_response_rows_with_NAs(self,df,y_variable):
+    def drop_response_rows_with_NAs(self,df,y_variable_current, y_to_delete):
         """
         Input: dataframe, response variable column 
         Output: dataframe rows with missing response varaibles
@@ -141,8 +141,8 @@ class Cleaning_Functions:
         """
     
     ## need to delete PPI_threshold since that is like our y2 which we won’t use
-        df = df.drop("PPI_Threshold", axis=1)
-        condition = df[y_variable]
+        df = df.drop(["PPI_Threshold",y_to_delete], axis=1)
+        condition = df[y_variable_current]
         rows_to_delete = df[np.isnan(condition)].index
     
     #save all rows with y=NA. Will use this data to predict the y later.
