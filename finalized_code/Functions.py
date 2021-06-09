@@ -141,7 +141,7 @@ class Cleaning_Functions:
         """
     
     ## need to delete PPI_threshold since that is like our y2 which we won’t use
-        df = df.drop(["PPI_Threshold",y_to_delete], axis=1)
+        df = df.drop(["PPI_Threshold","Livestock_Orientation", y_to_delete], axis=1)
         condition = df[y_variable_current]
         rows_to_delete = df[np.isnan(condition)].index
     
